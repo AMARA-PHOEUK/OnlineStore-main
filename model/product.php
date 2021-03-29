@@ -89,7 +89,7 @@
         }
  
         // Update / Modifier category
-        public function updateProduct($productId, $productName,$productCategoryId, $productQuantity, $productUnitPrice, $productDescription, $productPhoto){
+        public function updateProduct($productId, $name,$categoryId, $quantity, $unitPrice, $description, $photo){
             $bdd = $this->dbConnect();
             $req =  $bdd->prepare("UPDATE products SET
              name=:name,
@@ -99,12 +99,10 @@
                  description= :descript,
                   photo= :image
                    WHERE id_prod = :id");
-            $req->execute(['id'=>$productId,
-             'name'=>$productName, 'catid'->$productCategoryId,
-              'qte'-> $productQuantity,
-               'unitPrice'-> $productUnitPrice ,
-                'descript'-> $productDescription,
-                 'image' -> $photo]);
+            $req->execute(['id'=>$productId,'name'=>$name, 'categoryId'=>$categoryId, 'quantity'=> $quantity,
+             'unitPrice'=> $unitPrice ,
+                'description'=> $description,
+                 'photo' => $photo]);
         }    
 
         // Afficher tout les produits

@@ -5,17 +5,16 @@
         $modelCategory = new Category();        
         $allCats = $modelCategory->getAllCategories();
         // Appeler la vue qui va afficher le contenu de allCats
-        require "views/listcategories.php";
+        require "views/category/listcategories.php";
     }
     function showCategoryById($catId){
         $modelCategory = new Category();        
         $allCats = $modelCategory->getCatNameById($catId);
         // Appeler la vue qui va afficher le contenu de allCats
-        var_dump($allcats);
-        require "views/listcategories.php";
+        require "views/category/listcategories.php";
     }
     function updateCat($id){
-        require_once "views/form_update_cat.php";
+        require_once "views/category/form_update_cat.php";
     }
     function updateCatName($id,$catName) {
         $modelCategory = new Category();
@@ -23,14 +22,14 @@
         header("location: index.php?action=allCat");
     }
 
-    function deleteCat($catId){
+    function deleteCat($catId){ 
         $modelCategory = new Category();
         $modelCategory->deleteCategory($catId);
         header("location: index.php?action=allCat");
     }
 
     function newCat(){
-        require_once "views/form_new_cat.php";
+        require_once "views/category/form_new_cat.php";
     }
 
     function addNewCat($catName){

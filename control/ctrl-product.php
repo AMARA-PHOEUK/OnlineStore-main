@@ -4,7 +4,7 @@
     function showAllProducts(){
         $modelProduct = new Product();
         $products = $modelProduct->getAllProducts();
-        require_once "views/listproducts.php";
+        require_once "views/products/listproducts.php";
     }
     function showProductById($id){
         $modelProduct = new Product();
@@ -19,10 +19,10 @@
         $_POST['unit_price']=$product->getUnitPrice();
         $_POST['description']=$product->getUnitPrice();
         $_POST['photo']=$product->getPhoto();
-        
-        require_once "views/form_update_prod.php";
+        require_once "views/products/form_update_prod.php";
     }
-    function updateProduct($productId, $productName,$productCategoryId, $productQuantity, $productUnitPrice, $productDescription, $productPhoto){
+    function updateProduct($productId, $productName,$productCategoryId,
+     $productQuantity, $productUnitPrice, $productDescription, $productPhoto){
         $modelProduct = new Product();
         $product = $modelProduct->updateProduct($productId, $productName,$productCategoryId, $productQuantity, $productUnitPrice, $productDescription, $productPhoto);
         header( "location: index.php?action=allProducts");
@@ -34,7 +34,7 @@
     }
 
     function newProductForm(){
-        require_once "views/form_new_product.php";
+        require_once "views/products/form_new_product.php";
     }
     function addProduct($productName,$productCategoryId,
      $productQuantity, $productUnitPrice, $productDescription, $productPhoto){ 

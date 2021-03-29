@@ -2,19 +2,18 @@
 require_once "control/ctrl-category.php";
 require_once "control/ctrl-product.php";
 require_once "model/product.php";
-
+require_once "control/ctrl-user.php";
+session_start();
 $titrePage = "MARA STORE : Home";
 $content = "<h3>Contenu specifique</h3>";
-
 require "views/template.php";
 
-// *******************TEST PRODUCT**************************************
 
+// *******************TEST temporaire**************************************
 
-require_once " model/user.php";
-$test = new Users();
-$req = $test->getAllUsers();
-var_dump($req);
+function home() {
+    require_once "views/view-vide-a-reutiliser.php";
+}
 
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
@@ -58,12 +57,12 @@ if (isset($_GET['action'])) {
             break;
         case 'updateProduct':
             $productId = htmlspecialchars($_GET['id']);
-            $productName =htmlspecialchars($_POST['name']);
-            $productCategoryId =htmlspecialchars($_POST['category_id']);
-            $productQuantity =htmlspecialchars($_POST['quantity']);
-            $productUnitPrice =htmlspecialchars($_POST['unit_price']);
-            $productDescription =htmlspecialchars($_POST['description']);
-            $productPhoto =htmlspecialchars($_POST['photo']);
+            $productName = htmlspecialchars($_POST['name']);
+            $productCategoryId = htmlspecialchars($_POST['category_id']);
+            $productQuantity = htmlspecialchars($_POST['quantity']);
+            $productUnitPrice = htmlspecialchars($_POST['unit_price']);
+            $productDescription = htmlspecialchars($_POST['description']);
+            $productPhoto = htmlspecialchars($_POST['photo']);
             updateProduct($productId, $productName,$productCategoryId, $productQuantity, $productUnitPrice, $productDescription, $productPhoto);
             break;    
 
@@ -75,15 +74,62 @@ if (isset($_GET['action'])) {
             newProductForm();
                 break;
         case 'createProduct':
-            $productName =htmlspecialchars($_POST['name']);
-            $productCategoryId =htmlspecialchars($_POST['category_id']);
-            $productQuantity =htmlspecialchars($_POST['quantity']);
-            $productUnitPrice =htmlspecialchars($_POST['unit_price']);
-            $productDescription =htmlspecialchars($_POST['description']);
-            $productPhoto =htmlspecialchars($_POST['photo']);
+            $productName = htmlspecialchars($_POST['name']);
+            $productCategoryId = htmlspecialchars($_POST['category_id']);
+            $productQuantity = htmlspecialchars($_POST['quantity']);
+            $productUnitPrice = htmlspecialchars($_POST['unit_price']);
+            $productDescription = htmlspecialchars($_POST['description']);
+            $productPhoto = htmlspecialchars($_POST['photo']);
             addProduct($productName,$productCategoryId, $productQuantity,
              $productUnitPrice, $productDescription, $productPhoto);
             break;        
-
+        // ************************************USER*****************************************************
+        case 'allUsers':
+            showAllUsers();
+            break;
+        case 'deleteUser':
+            $id = htmlspecialchars($_GET['id']);
+            removeUser($id);
+            break;
+        case 'newUserForm':
+            newUserForm();
+            break;
+        case 'addNewUser':
+            $name = htmlspecialchars($_POST['name']);
+            $firstname = htmlspecialchars($_POST['firstname']);
+            $email = htmlspecialchars($_POST['email']);
+            $password = htmlspecialchars($_POST['motdepasse']);
+            $statut_id = htmlspecialchars($_POST['statut_id']);
+            addUser($name, $firstname, $email, $password, $statut_id);
+            break;
+        case 'updateUserForm':
+            $id = htmlspecialchars($_GET['id']);
+            updateUserForm($id);
+            break;
+        case'updateUser':
+            $id = htmlspecialchars($_GET['id']);
+            $name = htmlspecialchars($_POST['name']);
+            $firstname = htmlspecialchars($_POST['firstname']);
+            $email = htmlspecialchars($_POST['email']);
+            $password = htmlspecialchars($_POST['motdepasse']);
+            $statut_id = htmlspecialchars($_POST['statut_id']);
+            modifyUser($id, $name, $firstname , $email, $password, $statut_id);            
+            break;
+        case 'loginForm':
+            loginForm();
+            break;
+        case 'login':
+            $email = htmlspecialchars($_POST['email']);
+            $password = htmlspecialchars($_POST['password']);
+            login($email, $password);
+            break;
+        case 'logout':
+            logout();
+            break;
+        default:
+            home();
+        }
     }
+    else {
+    home();
 }
