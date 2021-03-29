@@ -1,0 +1,82 @@
+<?php
+session_start();
+require_once('./views/header.php');
+    $titrePage = "Ma Boutique : Home";
+    require_once('./control/ctrl-category.php');
+    require_once('./control/ctrl-product.php');
+    require_once('./control/ctrl-user.php');
+    $h2= "Titre Provisoire";
+    require_once('./model/category.php');
+
+// *********************************************FONCTIONS CATEGORIES **/*********************** */
+    // function test afficher TOUTES les categories
+    // $test = new Category;
+    // $test = $test->getAllCategory();
+    // foreach($test as $element){
+    //     $name= $element->getCatName();
+    //     echo ' ',$name;
+    // }
+    // // function test afficher la catégorie ID 1
+    // $test2 = new Category;
+    // $catName = $test2->getCatNameById(1);
+    // // $nom = $catName['name'];
+    // // echo ($nom);
+    // var_dump($catName);
+    // // création d'une catégorie
+    // $test2->createCategory('nouvelle category amara');
+    // // effacer catégorie par id
+    // $test2->deleteCategory('23');
+    // // update une catégorie
+    // $test2->updateCategory(36,'VIQUEL NOUVEAU NOM');
+    
+
+    ?>
+    <form action="./index.php?action=searchCategoryId" method="post" name="searchCat">
+        <label>Catégorie par id</label>
+        <input type="text" name="searchCat" id="searchCat">
+        <button type="submit"> Rechercher</button>
+    </form>
+    <form action="./index.php?action=searchAllCategory">
+    
+    </form>
+    <?php
+
+    // *********************************************Products
+    
+    
+    
+    
+    
+    // *************************************SWITCH*************************************************
+    if (isset($_GET['action'])){
+        switch($_GET['action']){
+            case 'searchCategoryId':
+                $id=$_POST['searchCat'];
+                searchCategoryById($id);
+                break;
+                case 'addCategory':
+                    echo "fonction manquante";
+                    break;
+                case 'addProduct':
+                echo"fonction manquante";
+                break;
+            case 'listProducts':
+                echo "fonction manquante";
+                break;
+
+
+            default:
+                echo "bonjour, il ne se passe rien";
+                break;
+        }
+    }
+    else{
+        echo"<p>rien ne marche, mais il n'y a pas de message d'erreur au moins</p>";
+    }
+
+// try & catch à faire ici
+//     voir tt les produits
+//     creer
+// delete 
+// update 
+// cat 
