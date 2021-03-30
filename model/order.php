@@ -110,11 +110,13 @@
             WHERE products.id_prod = order_lines.productId 
             AND id_prod = :id ");
             $req->execute(['id'=>$id]);
-            return $req;
+            $order= $req->fetch();
+            return $order;
         } 
 
-        public function getTotalByOrder(){
 
+        public function getTotalByOrder(){
+            
         }
     }
 ?>
