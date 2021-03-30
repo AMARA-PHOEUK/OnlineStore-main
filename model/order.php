@@ -68,7 +68,7 @@
        // DELETE/Effacer COMMANDE 
         public function deleteOrder($id){
             $bdd = $this->      dbConnect();
-            $lines = $bdd->prepare("DELETE FROM order WHERE  id=:id ");
+            $lines = $bdd->prepare("DELETE FROM orders WHERE  id=:id ");
             $lines->execute(['id'=> $id]);
             $lines->closeCursor();
         }
@@ -97,26 +97,6 @@
             $sql->execute(['customerId'=> $customerId]);
         }
 
-        // 
-
-        // OBTENIR LE TOTAL PAR PRODUIT
-        public function getPriceByProductId($id){
-            $bdd = $this->dbConnect();
-            $req = $bdd->prepare("SELECT unit_price,
-            products.quantity,
-            order_lines.quantity
-            FROM products INNER JOIN
-            order_lines 
-            WHERE products.id_prod = order_lines.productId 
-            AND id_prod = :id ");
-            $req->execute(['id'=>$id]);
-            $order= $req->fetch();
-            return $order;
-        } 
-
-
-        public function getTotalByOrder(){
-            
-        }
+ 
     }
 ?>

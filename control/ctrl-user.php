@@ -48,8 +48,14 @@
         
         $modeleUser = new User();
         // 1°) $modelUser->getUserByemail()
-            $req = $modeleUser->connectUser($email,$password);
-        
+        $req = $modeleUser->connectUser($email,$password);
+        if (!empty($user)) {
+                
+            $_SESSION['statutId'] = $user->getStatutId();
+            $_SESSION['curUserId'] = $user->getUserId();          
+        } else {
+             echo "<p>email ou mdp pas trouvé</p>";
+            }
         // 2°) Comparer paswword du Form averc pasword de la base
         
         // 3°) Si OK alors init $_SESSION

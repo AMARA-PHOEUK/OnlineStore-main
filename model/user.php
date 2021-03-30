@@ -114,15 +114,8 @@
                 $req =  $bdd->prepare("SELECT * FROM users WHERE email = :email AND password =:password");
                 $req->execute(['email'=>$email, 'password'=>$password]);
                 $req->setFetchMode(PDO::FETCH_CLASS, 'User');    
-                $user= $req->fetch();
-                if (!empty($user)) {
-                
-                    $_SESSION['statutId'] = $user->getStatutId();
-                    $_SESSION['curUserId'] = $user->getUserId();
-                  
-                } else {
-                 echo "<p>email ou mdp pas trouvé</p>";
-                }
+                $user= $req->fetchAll();
+                return $user;
         } 
     }
 

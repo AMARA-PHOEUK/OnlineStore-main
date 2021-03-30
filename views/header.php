@@ -11,8 +11,8 @@
                     <li><a href="./index.php?action=logout">Déconnexion</a></li>
 
             <?php } else {?>
-                <li><a href="#">Bientot un bouton</a></li>
-                <!-- <li><a href="./index.php?action=loginForm">Connexion à votre compte</a></li> -->
+          
+                <li><a href="./index.php?action=loginForm">Connexion à votre compte</a></li>
             <?php } ?>
         </ul>
     </nav>

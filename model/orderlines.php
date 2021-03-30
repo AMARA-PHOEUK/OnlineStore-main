@@ -1,5 +1,5 @@
 <?php
-    class OrderLines extends DataBase{
+    class Orderline extends DataBase{
         private $orderLineId;
         private $orderLineCommandId;
         private $orderLineProductId;
@@ -38,7 +38,7 @@
         $bdd = $this->dbConnect();
         $orderLines = $bdd
         ->query("SELECT * FROM order_lines")
-        ->fetchAll(PDO::FETCH_CLASS, 'OrderLines');
+        ->fetchAll(PDO::FETCH_CLASS, 'OrderLine');
          return $orderLines;
     }    
 
@@ -46,7 +46,7 @@
         $bdd = $this->dbConnect();
         $req =  $bdd->prepare("SELECT * FROM order_lines WHERE orderId = :id");
         $req->execute(['id'=>$id]);
-        $req->setFetchMode(PDO::FETCH_CLASS, 'OrderLines');    
+        $req->setFetchMode(PDO::FETCH_CLASS, 'OrderLine');    
         $orderLines= $req->fetchAll();
         return $orderLines;
     }
@@ -56,7 +56,7 @@
         $bdd = $this->dbConnect();
         $req =  $bdd->prepare("SELECT * FROM order_lines WHERE id = :id");
         $req->execute(['id'=>$id]);
-        $req->setFetchMode(PDO::FETCH_CLASS, 'OrderLines');    
+        $req->setFetchMode(PDO::FETCH_CLASS, 'OrderLine');    
         $orderLines= $req->fetch();
         return $orderLines;
     }
@@ -79,6 +79,38 @@
         $lines->execute(['id'=> $id]);
         $lines->closeCursor();
     }    
+
+           // OBTENIR LA QUANTITE PAR ID
+           public function getQteById($id){
+            $bdd = $this->dbConnect();
+            $req = $bdd->prepare("SELECT 
+            quantity
+            FROM order_lines 
+            WHERE id = :id ");
+            $req->execute(['id'=>$id]);
+            $order= $req->fetch();
+            return $order;
+         
+        } 
+
+        // OBTENIR LE TOTAL PAR PRODUIT
+        public function getPriceByProductId($id){
+            $bdd = $this->dbConnect();
+            $req = $bdd->prepare("SELECT unit_price,
+            order_lines.quantity
+            FROM products INNER JOIN
+            order_lines 
+            WHERE products.id_prod = order_lines.productId 
+            AND id_prod = :id ");
+            $req->execute(['id'=>$id]);
+            $order= $req->fetch();
+            return $order;
+        } 
+
+
+        public function getTotalByOrder(){
+                
+        }
 }
 
 ?>
