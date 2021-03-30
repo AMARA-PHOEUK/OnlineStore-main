@@ -18,8 +18,10 @@
                 <tr>
                     <td><?= $cat->getCatId() ?></th>
                     <td><?= $cat->getCatName() ?></td>
-                    <td><a class="btn btn-warning" href="./index.php?action=updateCat&id= <?= $cat->getCatId() ?>" >Modifier</a></td>
-                    <td><a class="btn btn-danger" href="./index.php?action=deleteCat&id= <?= $cat->getCatId() ?>" >Supprimer</a></td>
+                    <?php if ($_SESSION['statutId'] ==2 ){ ?>
+                        <td><a class="btn btn-warning" href="./index.php?action=updateCat&id= <?= $cat->getCatId() ?>" >Modifier</a></td>
+                        <td><a class="btn btn-danger" href="./index.php?action=deleteCat&id= <?= $cat->getCatId() ?>" >Supprimer</a></td>
+                    <?php } ?>
                 </tr>      
             <?php } ?>
         </tbody>

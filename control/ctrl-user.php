@@ -1,5 +1,4 @@
 <?php 
-    ession_start();
     require_once "model/user.php";
 
     function showAllUsers(){

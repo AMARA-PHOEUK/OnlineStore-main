@@ -29,8 +29,10 @@
                         <td><?= $product->getUnitPrice() ?></th>
                         <td><?= $product->getUnitPrice() ?></td>
                         <td><img src="<?= $product->getPhoto() ?>" heigth="20" width="100" alt=""></th>
-                        <td><a class="btn btn-warning" href="./index.php?action=updateProductForm&id= <?= $product->getProductId() ?>" >Modifier</a></td>
-                        <td><a class="btn btn-danger" href="./index.php?action=deleteProduct&id= <?= $product->getProductId() ?>" >Supprimer</a></td>
+                        <?php if ($_SESSION['statutId'] ==2 ){ ?>
+                            <td><a class="btn btn-warning" href="./index.php?action=updateProductForm&id= <?= $product->getProductId() ?>" >Modifier</a></td>
+                            <td><a class="btn btn-danger" href="./index.php?action=deleteProduct&id= <?= $product->getProductId() ?>" >Supprimer</a></td>
+                        <?php } ?>
                     </tr>      
                 <?php } ?>
             </tbody>

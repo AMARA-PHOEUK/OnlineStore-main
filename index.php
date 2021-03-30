@@ -1,15 +1,19 @@
 <?php
 require_once "control/ctrl-category.php";
 require_once "control/ctrl-product.php";
-require_once "model/product.php";
 require_once "control/ctrl-user.php";
+require_once "model/product.php";
+require_once "model/order.php";
+
+
 session_start();
-$titrePage = "MARA STORE : Home";
+$titrePage = "AMARA STORE : Home";
 $content = "<h3>Contenu specifique</h3>";
 require "views/template.php";
 
-
-// *******************TEST temporaire**************************************
+// ******************************envoi page de test**************************************
+require_once "test.php";
+// **************************************************************************************
 
 function home() {
     require_once "views/view-vide-a-reutiliser.php";
@@ -115,6 +119,7 @@ if (isset($_GET['action'])) {
             $statut_id = htmlspecialchars($_POST['statut_id']);
             modifyUser($id, $name, $firstname , $email, $password, $statut_id);            
             break;
+            // ***********************CONNEXION USER
         case 'loginForm':
             loginForm();
             break;
@@ -126,7 +131,9 @@ if (isset($_GET['action'])) {
         case 'logout':
             logout();
             break;
-        default:
+
+            // ***************************COMMANDES
+
             home();
         }
     }
