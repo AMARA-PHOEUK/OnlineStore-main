@@ -2,17 +2,18 @@
 require_once "control/ctrl-category.php";
 require_once "control/ctrl-product.php";
 require_once "control/ctrl-user.php";
+require_once "control/ctrl-order.php";
 require_once "model/product.php";
-require_once "model/order.php";
+require_once "model/orderlines.php";
 
 
 session_start();
 $titrePage = "AMARA STORE : Home";
 $content = "<h3>Contenu specifique</h3>";
 require "views/template.php";
-
-// ******************************envoi page de test**************************************
+// TEST
 require_once "test.php";
+// ******************************envoi page de test**************************************
 // **************************************************************************************
 
 function home() {

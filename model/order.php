@@ -1,12 +1,12 @@
 <?php
     require_once "model/db.php";
     class Order extends DataBase{
-        protected int $orderId;
-        protected int $customerId;
+        protected  $orderId;
+        protected  $customerId;
         protected $orderDate;
-        protected string $orderTotal;
-        protected bool $shipStatut;
-        protected bool $payStatut;
+        protected  $orderTotal;
+        protected  $shipStatut;
+        protected  $payStatut;
 
         public function getOrderId() {
             return $this->orderId;
@@ -42,6 +42,9 @@
         public function setOrderPayStatut($payStatut){
             $this->payStatut = $payStatut;
         }
+
+        //*********************************METHODES COMMANDES*************************************** */
+
         // ************************Trouver TOUTES LES COMMANDES**************************
         public function getAllOrders(){
             $bdd = $this->dbConnect();
@@ -50,19 +53,10 @@
             ->fetchAll(PDO::FETCH_CLASS, 'Order');
             return $orders;
         }
-        // *********************TROUVER Toutes les COMMANDS LINES pour une  *****************************
-        public function getAllLinesByOrderId($id){
-            $bdd = $this->dbConnect();
-            $req =  $bdd->prepare("SELECT * FROM order_lines WHERE orderId = :id");
-            $req->execute(['id'=>$id]);
-            $req->setFetchMode(PDO::FETCH_CLASS, 'Order');    
-            $orderLines= $req->fetchAll();
-            return $orderLines;
-        }
-
-
+    
+        
         // ***********************Trouver UNE COMMANDE PAR son ID***********************
-        function showOrderById($id){
+        function getOrderById($id){
             $bdd = $this->dbConnect();
             $req =  $bdd->prepare("SELECT * FROM orders WHERE id = :id");
             $req->execute(['id'=>$id]);
@@ -70,12 +64,57 @@
             $order= $req->fetch();
             return $order;
         }
+
        // DELETE/Effacer COMMANDE 
         public function deleteOrder($id){
             $bdd = $this->      dbConnect();
-            $req = $bdd->prepare("DELETE FROM order WHERE  id=:id ");
+            $lines = $bdd->prepare("DELETE FROM order WHERE  id=:id ");
+            $lines->execute(['id'=> $id]);
+            $lines->closeCursor();
+        }
+
+ 
+
+        // Update / Modifier commande
+        public function updateOrder($id, $shipStatut, $payStatut){
+            $bdd = $this->dbConnect();
+            $req =  $bdd->prepare("UPDATE orders SET
+            shipStatut = :shipStatut,
+            payStatut = :payStatut
+            WHERE id = :id");
+            $req->execute(['id'=>$id,
+            'shipStatut'=> $shipStatut ,
+            'payStatut'=> $payStatut]);
+        }            
+        
+        // Créer commande
+        public function createOrder($customerId ){
+            $reqSql = "INSERT INTO orders 
+                (customerId, date, shipStatut, payStatut) 
+                VALUES ( :customerId, NOW(), 0, 0)";
+            $bdd = $this->dbConnect();
+            $sql = $bdd->prepare($reqSql);
+            $sql->execute(['customerId'=> $customerId]);
+        }
+
+        // 
+
+        // OBTENIR LE TOTAL PAR PRODUIT
+        public function getPriceByProductId($id){
+            $bdd = $this->dbConnect();
+            $req = $bdd->prepare("SELECT unit_price,
+            products.quantity,
+            order_lines.quantity
+            FROM products INNER JOIN
+            order_lines 
+            WHERE products.id_prod = order_lines.productId 
+            AND id_prod = :id ");
             $req->execute(['id'=>$id]);
-            $req->closeCursor();
+            return $req;
+        } 
+
+        public function getTotalByOrder(){
+
         }
     }
 ?>
