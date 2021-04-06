@@ -110,12 +110,19 @@
         }
 
         public function connectUser($email, $password) {      
+            try{
                 $bdd = $this->dbConnect();
                 $req =  $bdd->prepare("SELECT * FROM users WHERE email = :email AND password =:password");
                 $req->execute(['email'=>$email, 'password'=>$password]);
                 $req->setFetchMode(PDO::FETCH_CLASS, 'User');    
-                $user= $req->fetchAll();
+                $user= $req->fetch();
                 return $user;
+            } catch (Exception $ex) {
+                echo "Il y a eu une erreur de connexion";
+                echo $ex->getMessage();
+                echo " code erreur" . $ex->getCode();
+            }
+
         } 
     }
 

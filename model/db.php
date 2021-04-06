@@ -10,6 +10,14 @@ class DataBase{
             );
         return $bdd;
     }
+    // Getter unit Price
+    public function getUnitPrice(){
+        return $this->unit_price;
+    }
+    // Setter unit Price
+    public function setUnitPrice($unitPrice){
+        $this->unit_price = $unitPrice;
+    }
 }
 
 ?>

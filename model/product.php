@@ -1,6 +1,7 @@
 <?php
     require_once "model/db.php";
-
+    const DEC = 0;
+    const INC = 1;
     class Product extends DataBase{
         protected int $id_prod;
         protected string $name;
@@ -113,6 +114,15 @@
                 ->fetchAll(PDO::FETCH_CLASS, 'product');
             return $products;
         }
+        // Afficher tout les produits par catégorie
+        public function  getAllProductsByCat($id){      
+            $bdd = $this->dbConnect();
+            $req =  $bdd->prepare("SELECT * FROM products WHERE category_id = :id");
+            $req->execute(['id'=>$id]);
+            $req->setFetchMode(PDO::FETCH_CLASS, 'Product');    
+            $products= $req->fetch();
+            return $products;
+        }
         // Trouver un product par son ID
         public function  getProductById($id){      
             $bdd = $this->dbConnect();
@@ -130,6 +140,36 @@
             $req->execute(['id'=>$id]);
             $req->closeCursor();
         }
+
+           // OBTENIR LA QUANTITE PAR ID
+    public function getProductQteById($id): int{
+        $bdd = $this->dbConnect();
+        $req = $bdd->prepare("SELECT 
+        quantity
+        FROM products
+        WHERE id_prod = :id ");
+        $req->execute(['id'=>$id]);
+        $rep= $req->fetch();
+        return $rep['quantity'];
+    } 
+
+    public function updateProductQteById($id, $newQte, $operation){
+         // 1°) Récupere la qte ens tock du produit
+        $qte = $this->getProductQteById($id);
+        $bdd = $this->dbConnect();
+        $req =  $bdd->prepare("UPDATE products SET
+        quantity = :newQte
+        WHERE id_prod = :id");
+
+        // 2°) Calculer la nouvelle Qte (+ ou -) en fonction de operation (INC / DEC)
+        if ($operation == DEC){
+            $qte -= $newQte;
+        } else {
+            $qte += $newQte;
+        };
+        $req->execute(['id'=>$id,
+        'newQte'=> $qte]);        
     }
+}
 
  

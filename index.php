@@ -4,7 +4,6 @@ require_once "control/ctrl-product.php";
 require_once "control/ctrl-user.php";
 require_once "control/ctrl-order.php";
 require_once "model/product.php";
-require_once "model/orderlines.php";
 
 
 session_start();
@@ -55,7 +54,10 @@ if (isset($_GET['action'])) {
         case 'allProducts':
             showAllProducts();
             break;
-
+        case 'allProductsByCat':
+            $catId = htmlspecialchars($_GET['id']);
+            showAllProductsByCat($catId);
+            break;
         case 'updateProductForm':
             $productId = htmlspecialchars($_GET['id']);
             updateProductForm($productId);
@@ -133,7 +135,8 @@ if (isset($_GET['action'])) {
             logout();
             break;
 
-            // ***************************COMMANDES
+        case 'showuser':
+
 
             home();
         }

@@ -11,7 +11,7 @@
     function showUserById($id){
         $modelUser = new User();
         $user = $modelUser->getUserById($id);
-        return $user;
+        require_once "view/users/listuser.php";
     }
 
     function removeUser($id){
@@ -48,19 +48,25 @@
         
         $modeleUser = new User();
         // 1°) $modelUser->getUserByemail()
-        $req = $modeleUser->connectUser($email,$password);
+        $user = $modeleUser->connectUser($email,$password);
         if (!empty($user)) {
                 
-            $_SESSION['statutId'] = $user->getStatutId();
-            $_SESSION['curUserId'] = $user->getUserId();          
+                $_SESSION['statutId'] = $user->getStatutId();
+                $_SESSION['curUserId'] = $user->getUserId();
+                $_SESSION['name'] = $user->getUserName();
+                $_SESSION['firstName'] = $user->getUserFirstName();
+
+                echo "<p> Connexion réussi. </p>";
+                header( "location: index.php?action=showUserById");
+                      
         } else {
-             echo "<p>email ou mdp pas trouvé</p>";
+             echo "<p>Email ou Mot de passe incorrect pas trouvé</p>";
             }
-        // 2°) Comparer paswword du Form averc pasword de la base
+ 
         
         // 3°) Si OK alors init $_SESSION
-            $_SESSION['statutId'];
-            $_SESSION['curuserId'];
+            // $_SESSION['statutId'];
+            // $_SESSION['curuserId'];
             
         // 4°) Redirection sur home
     }
@@ -69,7 +75,7 @@
         unset($_SESSION['statutId']);
         unset($_SESSION['curuserId']);
         setcookie("PHPSESSID", '', time()-3600);
-        
+        header( "location: index.php");
     }
 ?>
 

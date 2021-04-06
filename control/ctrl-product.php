@@ -6,6 +6,13 @@
         $products = $modelProduct->getAllProducts();
         require_once "views/products/listproducts.php";
     }
+    function showAllProductsByCat($id){
+        $modelProduct = new Product();
+        $products = $modelProduct->getAllProductsByCat($id);
+        require_once "views/products/listproducts.php";
+    }
+
+     
     function showProductById($id){
         $modelProduct = new Product();
         $product = $modelProduct->getProductById($id);
