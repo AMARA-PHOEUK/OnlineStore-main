@@ -1,19 +1,19 @@
 <?php
     require_once "model/db.php";
     class Order extends DataBase{
-        protected  $orderId;
+        protected  $id;
         protected  $customerId;
-        protected $orderDate;
-        protected  $orderTotal;
+        protected $date;
+        protected  $total;
         protected  $shipStatut;
         protected  $payStatut;
         protected $unit_price;
         protected $quantity;
         public function getOrderId() {
-            return $this->orderId;
+            return $this->id;
         }
-        public function setOrderId($orderId) {
-            $this->orderId = $orderId;
+        public function setOrderId($id) {
+            $this->id = $id;
         }
 
         public function getCustomerId() {
@@ -23,11 +23,11 @@
             $this->customerId = $customerId;
         }
 
-        public function getOrderDate(){
-            return $this->orderDate;
+        public function getDate(){
+            return $this->date;
         }
-        public function setOrderDate($orderDate){
-            $this->orderDate = $orderDate;
+        public function setDate($date){
+            $this->date = $date;
         }
 
         public function getOrderShipStatut(){
@@ -121,7 +121,7 @@
         public function getTotalByOrderTEST($orderId){
             
         $bdd = $this->dbConnect();
-        $req = $bdd->prepare("SELECT products.unit_price as 'price',
+        $req = $bdd->prepare("SELECT products.unit_price ,
         products.quantity 
         FROM products 
         INNER JOIN order_lines
@@ -153,37 +153,43 @@
     }
 
 class Orderline extends DataBase{
-    private $orderLineId;
-    private $orderLineCommandId;
-    private $orderLineProductId;
-    private $orderLineQuantity;
-    
+    private $id;
+    private $orderId;
+    private $productId;
+    private $quantity;
+    private $name;
+
     public function getOrderLineId() {
-        return $this->orderLineId;
+        return $this->id;
     }
-    public function setOrderLineId($orderLineId) {
-        $this->orderLineId = $orderLineId;
+    public function setid($id) {
+        $this->id = $id;
     }
 
-    public function getOrderLineCommandId() {
-        return $this->orderLineCommandId;
+    public function getOrderLineOrderId() {
+        return $this->orderId;
     }
-    public function setOrderLineCommandId($orderLineCommandId) {
-        $this->orderLineCommandId = $orderLineCommandId;
+    public function setOrderLineCommandId($orderId) {
+        $this->orderId = $orderId;
     }
 
     public function getOrderLineProductId() {
-        return $this->orderLineProductId;
+        return $this->productId;
     }
-    public function setOrderLineProductId($orderLineProductId) {
-        $this->orderLineProductId = $orderLineProductId;
+    public function setOrderLineProductId($productId) {
+        $this->productId = $productId;
     }
 
     public function getOrderLineQuantity() {
-        return $this->orderLineQuantity;
+        return $this->quantity;
     }
-    public function setOrderLineQuantity($orderLineQuantity) {
-        $this->orderLineQuantity = $orderLineQuantity;
+    public function setOrderLineQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
+
+     // Getter name
+     public function getProductName(){
+        return $this->name;
     }
 
     // ****************METHODES ORDERlINES*********************
@@ -197,7 +203,10 @@ public function getAllLines(){
 
 public function getAllLinesByOrderId($id){
     $bdd = $this->dbConnect();
-    $req =  $bdd->prepare("SELECT * FROM order_lines WHERE orderId = :id");
+    $req =  $bdd->prepare("SELECT * FROM order_lines 
+    INNER JOIN products 
+    ON order_lines.productId = products.id_prod 
+    WHERE orderId = :id");
     $req->execute(['id'=>$id]);
     $req->setFetchMode(PDO::FETCH_CLASS, 'OrderLine');    
     $orderLines= $req->fetchAll();
@@ -233,7 +242,17 @@ public function deleteOrderLineById($id){
     $lines->closeCursor();
 }    
 
-
-
+// TOTAL par ligne
+    public function getTotalByLine($orderlineId){
+        $sqlReq = "SELECT (products.unit_price * order_lines.quantity) as total , products.name
+        FROM order_lines
+        INNER JOIN products ON order_lines.productId = products.id_prod
+        WHERE order_lines.id = :orderlineId";
+        $bdd = $this->dbConnect();
+        $req = $bdd->prepare($sqlReq);
+        $req->execute(['orderlineId'=>$orderlineId]);
+        $order= $req->fetch();
+        return $order;
+    }
 
 }

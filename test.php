@@ -8,9 +8,6 @@ require_once "control/ctrl-order.php";
 require_once "model/order.php";
 
 
-$model= new Order();
-$req =showTotal(2);
 
-showAllOrderLineByOrder(2);
 // ********************************************************************
 ?>

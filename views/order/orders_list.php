@@ -11,9 +11,9 @@
                             <th scope="col">Id</th>
                         <?php } ?>
                         <th scope="col">id</th>
-                        <th scope="col">produit </th>
-                        <th scope="col">quantité</th>
-                        <th scope="col">total</th>
+                        <th scope="col">date </th>
+                        <th scope="col">statut livraison</th>
+                        <th scope="col">statut paiement</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
@@ -21,18 +21,19 @@
             <tbody>
                 <?php foreach ($orders as $order){
                     // echo '<pre>';
-                    // var_dump($order);
+                    // var_dump($orders);
                     // echo '</pre>';
-                    $id = $order->getOrderLineId();
+                    $id = $order->getOrderId();
                     
                 ?>
                     <tr>
-                        <td><?= $order->getOrderLineId($id)?></td>
-                        <td><?= $order->getProductName()?></td>
-                        <td><?= $order->getOrderLineQuantity($id)?></td>
-                        <td><?php echo searchTotalByLine($id) ?></td>
-                        <td><a class="btn btn-warning" href="./index.php?action=updateProductForm&id= <?= $order->getOrderLineId() ?>" >Modifier</a></td>
-                        <td><a class="btn btn-danger" href="./index.php?action=deleteProduct&id= <?= $order->getOrderLineId() ?>" >Supprimer</a></td>
+                        <td><?= $id?></td>
+                        <td><?= $order->getDate()?></td>
+                        <td><?= $order->getOrderShipStatut()?></td>
+                        <td><?= $order->getOrderPayStatut()?></td>
+                        <td><?php echo showTotal($id) ?></td>
+                        <td><a class="btn btn-warning" href="./index.php?action=getOrderLine&id= <?= $id ?>" >voir détail</a></td>
+                        <td><a class="btn btn-danger" href="./index.php?action=deleteProduct&id= <?= $id ?>" >Supprimer</a></td>
   
                     </tr>      
                 <?php } ?>

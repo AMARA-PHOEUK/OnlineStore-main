@@ -122,6 +122,15 @@ if (isset($_GET['action'])) {
             $statut_id = htmlspecialchars($_POST['statut_id']);
             modifyUser($id, $name, $firstname , $email, $password, $statut_id);            
             break;
+            // ******************Commandes
+        case'allOrders':
+            showAllOrders();
+            break;
+        case'getOrderLine':
+            $id = htmlspecialchars($_GET['id']);
+            showAllOrderLineByOrder($id);
+            break;
+            
             // ***********************CONNEXION USER
         case 'loginForm':
             loginForm();
