@@ -1,6 +1,6 @@
 <?php 
     require_once "model/order.php";
-
+// *********************************COMMANDES******************************************************
     function showAllOrders(){
         $modelOrder = new Order();
         $orders = $modelOrder->getAllOrders();
@@ -34,8 +34,10 @@
         $modelOrder = new Order();
         $stringTotal = $modelOrder->GetTotalByOrder($id);
         $total = (float)$stringTotal['total'];
-        
     }
+
+
+// **************************************ORDERLINE***************************************************************
 
     // rajouter OrderLine
     function addOrderLine($orderLineCommandId, $orderLineProductId,$orderLineQuantity){ 
@@ -58,15 +60,4 @@
         $total = $modelOrderLine->getTotalByLine($orderId);
         return $total['total'];
     }
-    // function () {
-    //     $modelOrderLine = new Orderline();
-        
-    //     getTotalByLines($orderlineId)
-    // }
 
-// liste des méthodes
-// getAllOrders();
-// getOrderById($id);
-// deleteOrder($id);
-// updateOrder($id, $shipStatut, $payStatut);
-// createOrder($customerId);

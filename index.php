@@ -1,16 +1,14 @@
 <?php
+session_start();
 require_once "control/ctrl-category.php";
 require_once "control/ctrl-product.php";
 require_once "control/ctrl-user.php";
 require_once "control/ctrl-order.php";
-require_once "model/product.php";
+require_once "control/ctrl-cart.php";
 
-
-session_start();
 $titrePage = "AMARA STORE : Home";
 $content = "<h3>Contenu specifique</h3>";
 require "views/template.php";
-// TEST
 require_once "test.php";
 // ******************************envoi page de test**************************************
 // **************************************************************************************
@@ -144,9 +142,23 @@ if (isset($_GET['action'])) {
             logout();
             break;
 
-        case 'showuser':
-
-
+            // ********************PANIER
+        case 'seeCart':
+            seeCart();
+            break;
+        case 'addToCart':
+            if (isset($_GET['id'])) {
+                $id = intval(htmlspecialchars($_GET['id']));
+                addToCart($id);
+            }
+            break;
+        case 'removeFromCart':
+            if (isset($_GET['id'])) {
+                $id = intval(htmlspecialchars($_GET['id']));
+                removeFromCart($id);
+            }
+            break;
+        default:
             home();
         }
     }

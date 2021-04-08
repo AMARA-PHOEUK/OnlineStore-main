@@ -18,6 +18,9 @@
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+
                     </tr>
             </thead>
             <tbody>
@@ -37,6 +40,8 @@
                             <td><a class="btn btn-warning" href="./index.php?action=updateProductForm&id= <?= $product->getProductId() ?>" >Modifier</a></td>
                             <td><a class="btn btn-danger" href="./index.php?action=deleteProduct&id= <?= $product->getProductId() ?>" >Supprimer</a></td>
                         <?php } ?>
+                        <td><a href="./index.php?action=addToCart&id= <?= $product->getProductId() ?>">AJOUTER AU PANIER</a></td>
+                        <td><a href="./index.php?action=removeFromCart&id= <?= $product->getProductId() ?>">RETIRER DU PANIER</a></td>
                     </tr>      
                 <?php } ?>
             </tbody>
