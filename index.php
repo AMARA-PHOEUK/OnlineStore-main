@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once "control/ctrl-category.php";
 require_once "control/ctrl-product.php";
 require_once "control/ctrl-user.php";
@@ -150,6 +151,18 @@ if (isset($_GET['action'])) {
             if (isset($_GET['id'])) {
                 $id = intval(htmlspecialchars($_GET['id']));
                 addToCart($id);
+            }
+            break;
+        case 'modifyPlus':
+            if (isset($_GET['id'])) {
+                $id = intval(htmlspecialchars($_GET['id']));       
+                modifyPlus($id);
+            }
+            break;
+        case 'modifyMinus':
+            if (isset($_GET['id'])) {
+                $id = intval(htmlspecialchars($_GET['id']));       
+                modifyMinus($id);
             }
             break;
         case 'removeFromCart':

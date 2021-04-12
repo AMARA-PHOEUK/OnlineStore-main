@@ -5,7 +5,6 @@
     function addToCart($id){
         // vérifier si le panier existe
         if (!isset($_SESSION['cart'])){
-            echo "création panier, effacer ce commentaire lorsque tout sera operationnel";
             createCart();
         }
         // vérifier si le produit est en qte suffissante
@@ -19,22 +18,55 @@
             // Augmenter la Qte du produit correspondant à $cartLineId
             $_SESSION['cart'][$cartLineId]['qte'] += 1;
         }
-        echo"<pre>";
-        var_dump($_SESSION['cart']);
-        echo"</pre>";
+        seeCart();
     }
         // RETIRER UN ARTICLE DU PANIER
     function removeFromCart($id){
         $prodIndex = searchProdInCart($id);
-        unset($cart[$prodIndex]);
-        // rappeler la vue du panier
+        unset($_SESSION['cart'][$prodIndex]);
+        seeCart();
     }
 
     // VOIR LE PANIER
-    function seeCart(){
-       echo "vous avez cliqué sur le panier. on va l'afficher bientot";
-       require "views/cart.php";
+    function seeCart(){  
+        if (!isset($_SESSION['cart'])){
+            createCart();
+        } else {    
+              
+            $product = new Product();    
+            $cart = $_SESSION['cart'];
+            $newCart = [];
+            foreach ($cart as $cartLine){
+                
+                // pour chaques cartline utiliser  $['prodid'] 
+                // pour obtenir le nom, prix
+                $cartLineProduct = $product->getProductById($cartLine['prodid']);
+                $productName = $cartLineProduct->getProductName();
+                $productPrice = $cartLineProduct->getUnitPrice();
+                $productPhoto = $cartLineProduct->getPhoto();
+
+                array_push($newCart, ['prodid'=>$cartLine['prodid'],
+                 'qte'=>$cartLine['qte'],'name'=>$productName,
+                  'unit_price'=>$productPrice,
+                   'photo'=>$productPhoto,
+                   'total'=>floatval(floatval($productPrice)*$cartLine['qte'])
+                   ]);
+
+
+                
+            }
+            $_SESSION['cart']= $newCart;
+
+        }
+        require "views/cartview.php";
     }
+        // est ce que le panier est vide??? OK
+        // ===> oui afficher votre panier est vide  OK 
+        // ===> non parcourir le panier et afficher les lignes 
+        // construire un tableau avec : nom produit, quantité,
+        //  prix total , prix unitaire, et prix total
+        //  le controlleur construit la liste et envoie dans la vue.
+    
     /**
      *  Creation du panier
      */
@@ -62,6 +94,19 @@
             } 
         }
         return $ret;
+    }
+    function modifyMinus($id){
+        // vérifier si le panier existe
+        if (!isset($_SESSION['cart'])){
+            createCart();
+        }
+// retirer une unité, et vérifier si la qté est égale ou inférieure à zéro.
+        $cartLineId = searchProdInCart($id);
+        $_SESSION['cart'][$cartLineId]['qte'] -= 1;
+        seeCart();
+        if ($_SESSION['cart'][$cartLineId]['qte'] <= 0){
+            removeFromCart($id);
+        }
     }
 ?>
 

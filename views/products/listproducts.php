@@ -35,13 +35,12 @@
                         <td><?= $product->getQuantity() ?></td>
                         <td><?= $product->getUnitPrice() ?></th>
                         <td><?= $product->getDescription() ?></td>
-                        <td><img src="<?= $product->getPhoto() ?>" heigth="20" width="100" alt=""></th>
+                        <td><img src="<?= $product->getPhoto() ?>" heigth="20" width="100" alt="<?= $product->getProductName() ?>"></th>
                         <?php if ($_SESSION['statutId'] === 2 ){ ?>
                             <td><a class="btn btn-warning" href="./index.php?action=updateProductForm&id= <?= $product->getProductId() ?>" >Modifier</a></td>
                             <td><a class="btn btn-danger" href="./index.php?action=deleteProduct&id= <?= $product->getProductId() ?>" >Supprimer</a></td>
                         <?php } ?>
                         <td><a href="./index.php?action=addToCart&id= <?= $product->getProductId() ?>">AJOUTER AU PANIER</a></td>
-                        <td><a href="./index.php?action=removeFromCart&id= <?= $product->getProductId() ?>">RETIRER DU PANIER</a></td>
                     </tr>      
                 <?php } ?>
             </tbody>
