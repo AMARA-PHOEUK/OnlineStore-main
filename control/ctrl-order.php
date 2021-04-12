@@ -17,7 +17,7 @@
     function eraseOrder($id){
         $modelOrder = new Order();
         $order = $modelOrder->deleteOrder($id);
-        // afficher à nouveau la note
+        
     }
 
     // créer commande
@@ -25,7 +25,7 @@
         $modelOrder = new Order();
         $orderId = $modelOrder->createOrder($customerId);
         $_SESSION['orderId'] = $orderId;
-        showAllOrders($orderId);
+        // showAllOrders($orderId); utiliser cette fonction pour aider à valider le panier
         
     }
 

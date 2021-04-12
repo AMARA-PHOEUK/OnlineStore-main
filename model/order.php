@@ -9,6 +9,8 @@
         protected  $payStatut;
         protected $unit_price;
         protected $quantity;
+        protected $order_line;
+
         public function getOrderId() {
             return $this->id;
         }

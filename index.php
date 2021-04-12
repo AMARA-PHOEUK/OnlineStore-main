@@ -171,6 +171,9 @@ if (isset($_GET['action'])) {
                 removeFromCart($id);
             }
             break;
+        case 'validateCart':
+            validateCart();
+            break;
         default:
             home();
         }

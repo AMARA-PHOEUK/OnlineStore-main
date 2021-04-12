@@ -1,9 +1,10 @@
 <?php 
     $titrePage = "Toutes les catégories";
     ob_start();
+    if ($_SESSION['statutId'] ==2 ){
 ?>
  <a href="./index.php?action=newCat" class="btn btn-success">Ajouter une catégorie</a>
-
+ <?php } ?>
     <table class="table table-dark">
         <thead>
                 <tr>

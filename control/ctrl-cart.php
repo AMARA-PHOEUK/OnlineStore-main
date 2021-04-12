@@ -8,10 +8,12 @@
             createCart();
         }
         // vérifier si le produit est en qte suffissante
-        //$produit = new Product();
-        //$quantite = $produit->getProductQteById($id);
+        $produit = new Product();
+        $quantite = $produit->getProductQteById($id);
         $cartLineId = searchProdInCart($id);
-        if ($cartLineId === false){
+        if ($quantite <= 0) {
+            echo "<script>alert(\" Désolé, ce produit est en rupture de stock \")</script>";
+        } else if ($cartLineId === false){
             // Ajouter le produit dans le panier + mettre Qte = 1 
             array_push($_SESSION['cart'], ['prodid'=>$id, 'qte'=>1]);
         } else {
@@ -51,9 +53,6 @@
                    'photo'=>$productPhoto,
                    'total'=>floatval(floatval($productPrice)*$cartLine['qte'])
                    ]);
-
-
-                
             }
             $_SESSION['cart']= $newCart;
 
@@ -95,18 +94,46 @@
         }
         return $ret;
     }
+
     function modifyMinus($id){
-        // vérifier si le panier existe
-        if (!isset($_SESSION['cart'])){
-            createCart();
-        }
-// retirer une unité, et vérifier si la qté est égale ou inférieure à zéro.
+        // retirer une unité, et vérifier si la qté est égale ou inférieure à zéro.
         $cartLineId = searchProdInCart($id);
         $_SESSION['cart'][$cartLineId]['qte'] -= 1;
-        seeCart();
         if ($_SESSION['cart'][$cartLineId]['qte'] <= 0){
-            removeFromCart($id);
+            removeFromCart($id);    
+        }
+        seeCart();
+    }
+
+    function modifyPlus($id){
+        // ajouter une unité, et vérifier si la qté n'excède pas le stock initial.
+        $cartLineId = searchProdInCart($id);
+        $productInfo = showProductById($id);
+
+        if ($_SESSION['cart'][$cartLineId]['qte'] >= $productInfo->getQuantity()){
+            $name = $productInfo->getProductName();
+            echo "<script>alert(\" vous avez atteint la quantité maximum pour le produit : {$name} \")</script>";
+        } else {        
+            $_SESSION['cart'][$cartLineId]['qte'] += 1;
+        }
+        seeCart();
+    }
+
+// valider un panier = créer commande,
+//  créer orderline, 
+//  vider panier, 
+//  modifier les quantités, unset la superglobale['cart']
+    function validateCart(){
+        $orderId = addOrder($_SESSION['curUserId']);
+
+        // $_SESSION['orderId'] sera le id de la commande
+        // for each de $_SESSION['cart'] des elements
+        // 
+        foreach($_SESSION['cart'] as $cartLine){
+            addOrderLine($orderId, $_SESSION['cart']['prodid'],$_SESSION['cart']['qte'] );
+            // createOrderLine($orderLineCommandId, $orderLineProductId,$orderLineQuantity ) 
         }
     }
+
 ?>
 

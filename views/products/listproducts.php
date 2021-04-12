@@ -2,7 +2,7 @@
     $titrePage = "Tout les produits";
     ob_start();
     ?>
-    <a href="./index.php?action=newProductForm" class="btn btn-success">Ajouter une catégorie</a>
+
  
     <table class="table table-dark">
             <thead>

@@ -120,8 +120,8 @@
             $req =  $bdd->prepare("SELECT * FROM products WHERE category_id = :id");
             $req->execute(['id'=>$id]);
             $req->setFetchMode(PDO::FETCH_CLASS, 'Product');    
-            $products= $req->fetch();
-            return $products;
+            $reponse= $req->fetch();
+            return $reponse;
         }
         // Trouver un product par son ID
         public function  getProductById($id){      
